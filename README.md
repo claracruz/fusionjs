@@ -12,8 +12,6 @@ Fusion JS provides:
 FusionJS is agnostic with regards to the JS framework or library you want to use. And was infact created specifically to enable apps to be written with any library without restriction to include swithcing app development to a different set of frameworks and libraries if required.
 
 
-**Note:**  ⚠️ This library is a private module at present (not yet open source, but available for use for any interested parties) and currently in Beta / unstable
-
 ### Data modelling and state management utilities
 
 The data modelling and state management utilities consists of three parts; FusionModel and FusionImmutable.

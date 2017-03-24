@@ -2,3 +2,9 @@
 .idea
 .DS_Store
 lib/
+
+*.vscode
+src/classes
+src/node_modules
+src/*.md
+src/typings
