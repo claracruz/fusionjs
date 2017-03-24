@@ -1,0 +1,19 @@
+{
+  "name": "fusionjs",
+  "version": "1.0.28",
+  "description": "FusionJS is a JS toolkit that brings it all together in an ever changing JS world. Currently in Beta / unstable",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claracruz/fusionjs.git"
+  },
+  "keywords": [
+    "fusionjs",
+    "react",
+    "redux",
+    "model",
+    "immutable"
+  ],
+  "author": "Clara Udofa",
+  "license": "CC-BY-ND-4.0"
+}
