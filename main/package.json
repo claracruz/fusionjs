@@ -1,0 +1,37 @@
+{
+  "name": "fusionjs",
+  "version": "1.0.28",
+  "description": "FusionJS is a JS toolkit that provides library/framework agnostic tools",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+	  "pretest": "tsc tests/*.ts --module commonjs",
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claracruz/fusionjs.git"
+  },
+  "keywords": [
+    "fusionjs",
+    "react",
+    "redux",
+    "model",
+    "immutable"
+  ],
+  "author": "Clara Udofa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/claracruz/fusionjs/issues"
+  },
+  "homepage": "https://github.com/claracruz/fusionjs#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  },
+  "typescript": {
+    "definition": "package.d.ts"
+  }
+}
