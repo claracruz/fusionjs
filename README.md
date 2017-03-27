@@ -14,7 +14,7 @@ FusionJS is agnostic with regards to the JS framework or library you want to use
 
 ### Data modelling and state management utilities
 
-The data modelling and state management utilities consists of three parts; FusionModel and FusionImmutable.
+The data modelling and state management utilities consists of two parts; FusionModel and FusionImmutable.
 
 
 ### FusionModel
@@ -196,7 +196,7 @@ fusionImmutable.merge(state, newData, record);
 ```
 
 ### Known Issues
- * TypeError: Class constructors FsuionModelcannot be invoked without 'new'
+ * TypeError: Class constructors FsuionModel cannot be invoked without 'new'
    - Solution: You will need to use a babel preset that is targeted to your platform
 
 	```javascript
