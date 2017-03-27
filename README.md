@@ -196,7 +196,7 @@ fusionImmutable.merge(state, newData, record);
 ```
 
 ### Known Issues
- * TypeError: Class constructors FsuionModel cannot be invoked without 'new'
+ * TypeError: Class constructors FusionModel cannot be invoked without 'new'
    - Solution: You will need to use a babel preset that is targeted to your platform
 
 	```javascript
