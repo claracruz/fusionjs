@@ -1,3 +1,4 @@
-name: FusionJS
-markdown: kramdown
+title: FusionJS
+description: "One library to bind them all."
 theme: jekyll-theme-cayman
+show_downloads: true
