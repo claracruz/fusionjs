@@ -94,6 +94,14 @@ export class FusionStore implements IStore {
     }
 
     /**
+     * @description Set store data
+     */
+    setData (data) {
+        this.reset();
+        this.set(data);
+    }
+
+    /**
      * @description Returns relevant record (model instance) if id parameter provided or all records (model instances) 
      * in the collection if id parameter not provided.
      */

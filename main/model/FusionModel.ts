@@ -98,6 +98,32 @@ export class FusionModel implements IModel {
     }
 
     /**
+     * @description Set model data
+     */
+    setData (data) {
+        this.data = data;
+        if (this.data) {
+            this.set(this.data);
+        }
+    }
+
+    /**
+     * @description Return whether or record has been modified
+     */
+    isDirty () {
+        return this.data === this.toObject();
+    }
+
+    /**
+     * @description Commits all changes made to the instance since either creation or the last commit operation.
+     */
+    commit () {
+        if (this.isDirty ()) {
+            this.data = this.toObject();
+        }
+    }
+
+    /**
      * @description Return the dataset that composes the model as a pure JS object
      */
     toObject () {
