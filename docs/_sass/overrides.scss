@@ -17,17 +17,24 @@ body {
 	font-size: 1rem;
 	margin-top: 0;
 }
-.main-content h2 {
-	margin-bottom: 0;
-	margin-top: 1rem;
-}
-.main-content p {
-	margin: 0;
-}
 .main-content,
 .site-footer {
 	font-size: 0.85rem;
 }
-.main-content pre > code {
-	font-size: 0.75rem;
+.main-content {
+	h2 {
+		margin-bottom: 0;
+		margin-top: 1rem;
+	}
+	p {
+		margin: 0;
+	}
+	pre > code {
+		font-size: 0.75rem;
+	}
+	h3,
+	h3:first-child {
+		margin: 10px 0 0 0px;
+	}
 }
+
