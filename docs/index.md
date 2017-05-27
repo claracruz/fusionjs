@@ -43,9 +43,9 @@ FusionStores encapsulate a cache collection of FusionModels. [quick start guide.
 
 Application samples
  * #### State management
- Demonstrate how to manage states for multiple components on a page using fusionJS. [more...](state-management)
+ Demonstrates app state management using fusionJS. [more...](state-management)
  * #### Complex data management 
- Demonstrates how to manage apps with complex data requirements. [more...](complex-data)
+ Demonstrates managing complex data requirements using fusionJS. [more...](complex-data)
 
     
 
