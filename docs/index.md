@@ -39,13 +39,13 @@ FusionStores encapsulate a cache collection of FusionModels. [quick start guide.
  1. <a href="http://developer.roadrulesz.com/blog/react_redux_with_fusionjs.html" target="_blank">React-Redux with fusionjs (Part 1)</a>
  2. <a href="http://developer.roadrulesz.com/blog/react_redux_with_fusionjs_2.html" target="_blank">React-Redux with fusionjs (Part 2)</a>
  3. <a href="http://developer.roadrulesz.com/blog/react_redux_with_fusionjs_3.html" target="_blank">React-Redux with fusionjs (Part 3)</a>
- 
+
 
 Application samples
  * #### State management with FusionJS 
- Demonstrates how to manage application view states for multiple components on a view. [more...](state-management)
+ Demonstrate how to manage states for multiple components on a page using fusionJS. [more...](state-management)
  * #### Complex data management with FusionJS. 
- Demonstrates how to management application with complex data requirments. [more...](complex-data)
+ Demonstrates how to manage apps with complex data requirements. [more...](complex-data)
 
     
 
