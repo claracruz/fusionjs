@@ -156,6 +156,23 @@ export class FusionStore implements IStore {
     }
 
     /**
+     * @description Queries all the records in store by provided key/value pair
+     * Returns matching records
+     */
+	query (keyValue) {
+        console.warn('query method is experimental and not yet fully supported, and is likely to change!');
+		let records = [],
+            storeData = this.get();
+
+        storeData.forEach((record) => {
+            let recordValue = record.query(keyValue);
+            records = records.concat(recordValue);
+        });
+
+        return records;
+	}
+
+    /**
      * @description Compares its collection values with collection in provided store
      */
 	equals (store) {

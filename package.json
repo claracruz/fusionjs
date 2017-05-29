@@ -1,6 +1,6 @@
 {
   "name": "fusionjs",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "FusionJS is a JS toolkit that provides library/framework agnostic tools",
   "main": "lib/index.js",
   "repository": {

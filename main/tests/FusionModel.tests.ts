@@ -487,4 +487,63 @@ describe('FusionModel', () => {
 				expect(testModel.find(recordToFind)).to.be.null;
 		})
 	});
+
+	describe('#Commiting dirty record', () => {
+		class TestRelsModel extends FusionModel {
+			idProperty = 'relId';
+			fields = [{
+				name: 'relId',
+				type: 'string'
+			}];
+			constructor(data) {
+				super(data);
+				this.init();
+			}
+		}
+
+		class TestModel extends FusionModel {
+			idProperty = 'testId';
+			fields = [{
+				name: 'testId',
+				type: 'string'
+			}, {
+				name: 'testName',
+				type: 'string'
+			}];
+			hasMany = [{
+				name: 'rels',
+				model: TestRelsModel
+			}];
+		}
+		let testData = { 
+			testId: 123,
+			testName: 'a name',
+			rels: [
+				{relId: 123},
+				{relId: 456},
+				{relId: 789}
+			]
+		},
+		testModel = new TestModel(testData).init();
+
+		it('should determine when record is not dirty', () => {
+			expect(testModel.isDirty()).to.be.false;
+		});
+
+		it('should determine when record is dirty', () => {
+			let data = (<any>Object).assign(testData, {testName: 'a new name'});
+			testModel.set({
+				testName: 'a new name',
+			});
+			expect(testModel.toObject()).to.not.equal(data);
+			expect(testModel.isDirty()).to.be.true;
+		});
+
+		it('should commit changes', () => {
+			let data = (<any>Object).assign(testData, {testName: 'a new name'});
+			testModel.commit();
+			expect(testModel.toObject()).to.deep.equal(data);
+			expect(testModel.isDirty()).to.be.false;
+		});
+	});
 });

@@ -70,6 +70,16 @@ export class FusionModel implements IModel {
     private _stateful: Object;
 
     /**
+     * @private
+     */
+    private _isInitialised: boolean = false;
+
+    /**
+     * @private
+     */
+    private _modifiedFields: Array<any>;
+
+    /**
      * @descritpion
      */
     private path: string = '';
@@ -94,6 +104,8 @@ export class FusionModel implements IModel {
         if (this.data) {
             this.set(this.data);
         }
+
+        this._isInitialised = true;
         return this;
     }
 
@@ -101,9 +113,10 @@ export class FusionModel implements IModel {
      * @description Set model data
      */
     setData (data) {
-        this.data = data;
-        if (this.data) {
-            this.set(this.data);
+        if (data) {
+            this.set(data);
+            this.data = data;
+            this._resetModified();
         }
     }
 
@@ -111,7 +124,7 @@ export class FusionModel implements IModel {
      * @description Return whether or record has been modified
      */
     isDirty () {
-        return this.data === this.toObject();
+        return this._modifiedFields && this._modifiedFields.length > 0 || false;
     }
 
     /**
@@ -120,7 +133,29 @@ export class FusionModel implements IModel {
     commit () {
         if (this.isDirty ()) {
             this.data = this.toObject();
+            this._resetModified();
         }
+    }
+
+   /**
+     * @private
+     * @description Sets modified field reference
+     */
+     _setModifiedFields (key) {
+        if (this._isInitialised) {
+            if (!this._modifiedFields) {
+                this._modifiedFields = [];
+            }
+            this._modifiedFields.push(key);
+        }
+    }
+
+    /**
+     * @private
+     * @description Empties modified fileds cache
+     */
+    _resetModified () {
+        this._modifiedFields = [];
     }
 
     /**
@@ -139,6 +174,36 @@ export class FusionModel implements IModel {
         }, this);
         return buffer;
     }
+
+    /**
+     * @description Performs a deep search of record using provided key/value pair
+     * Returns matching records
+     */
+	query (keyValue) {
+        console.warn('query method is experimental and not yet fully supported, and is likely to change!');
+		let key = Object.keys(keyValue)[0],
+            item = this.get(key),
+            records = [];
+
+        if (item === keyValue[key]) {
+            records.push(this);
+        }
+
+        this._hasManyKeys.forEach((key) => {
+            let store = this[key](),
+                foundRecords = records.concat(store.query(keyValue));
+            if (foundRecords && foundRecords.length > 0) {
+                records = records.concat(store.query(keyValue));
+            }          
+        }, this);
+
+        this._hasOneKeys.forEach((key) => {
+            let model = this[key]();
+            records = records.concat(model.query(keyValue));
+        }, this);
+
+        return records;
+	}
 
     /**
      * @param {string} key
@@ -178,15 +243,19 @@ export class FusionModel implements IModel {
         if (value || keyOrData instanceof String) {
             if (this._keys.indexOf(keyOrData) > -1)  {
                 this._setData(keyOrData, value);
+                this._setModifiedFields(keyOrData);
             }
         } else {
             Object.keys(keyOrData).forEach((key) => {
                 if (this._keys.indexOf(key) > -1)  {
                     this._setData(key, keyOrData[key]);
+                    this._setModifiedFields(key);
                 } else if (this._hasOneKeys.indexOf(key) > -1 && keyOrData[key]) {
                     this._setAssociatedModelData(keyOrData, key);
+                    this._setModifiedFields(key);
                 } else if (this._hasManyKeys.indexOf(key) > -1 && keyOrData[key]) {
                     this._setAssociatedStoreData(keyOrData, key);
+                    this._setModifiedFields(key);
                 }
             });
         }
@@ -435,5 +504,4 @@ export class FusionModel implements IModel {
             }, this);
         }
     }
-    
 }
