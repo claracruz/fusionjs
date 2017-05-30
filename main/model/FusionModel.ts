@@ -75,11 +75,6 @@ export class FusionModel implements IModel {
     private _isInitialised: boolean = false;
 
     /**
-     * @private
-     */
-    private _modifiedFields: Array<any>;
-
-    /**
      * @descritpion
      */
     private path: string = '';
@@ -116,46 +111,7 @@ export class FusionModel implements IModel {
         if (data) {
             this.set(data);
             this.data = data;
-            this._resetModified();
         }
-    }
-
-    /**
-     * @description Return whether or record has been modified
-     */
-    isDirty () {
-        return this._modifiedFields && this._modifiedFields.length > 0 || false;
-    }
-
-    /**
-     * @description Commits all changes made to the instance since either creation or the last commit operation.
-     */
-    commit () {
-        if (this.isDirty ()) {
-            this.data = this.toObject();
-            this._resetModified();
-        }
-    }
-
-   /**
-     * @private
-     * @description Sets modified field reference
-     */
-     _setModifiedFields (key) {
-        if (this._isInitialised) {
-            if (!this._modifiedFields) {
-                this._modifiedFields = [];
-            }
-            this._modifiedFields.push(key);
-        }
-    }
-
-    /**
-     * @private
-     * @description Empties modified fileds cache
-     */
-    _resetModified () {
-        this._modifiedFields = [];
     }
 
     /**
@@ -243,19 +199,15 @@ export class FusionModel implements IModel {
         if (value || keyOrData instanceof String) {
             if (this._keys.indexOf(keyOrData) > -1)  {
                 this._setData(keyOrData, value);
-                this._setModifiedFields(keyOrData);
             }
         } else {
             Object.keys(keyOrData).forEach((key) => {
                 if (this._keys.indexOf(key) > -1)  {
                     this._setData(key, keyOrData[key]);
-                    this._setModifiedFields(key);
                 } else if (this._hasOneKeys.indexOf(key) > -1 && keyOrData[key]) {
                     this._setAssociatedModelData(keyOrData, key);
-                    this._setModifiedFields(key);
                 } else if (this._hasManyKeys.indexOf(key) > -1 && keyOrData[key]) {
                     this._setAssociatedStoreData(keyOrData, key);
-                    this._setModifiedFields(key);
                 }
             });
         }
