@@ -260,14 +260,14 @@ export class FusionModel implements IModel {
         if (deepEqual) {
             if (this.hasMany) {
                 this._hasManyKeys.some((key) => {
-                    isEqual = this[key]().equals(record[key]());
+                    isEqual = this[key]()._isEqual(record[key](), deepEqual);
                     return !isEqual;
                 });
             } 
 
             if (this.hasOne) {
                 this._hasOneKeys.some((key) => {
-                    isEqual = this[key]().equals(record[key]());
+                    isEqual = this[key]()._isEqual(record[key](), deepEqual);
                     return !isEqual;
                 });
             }
