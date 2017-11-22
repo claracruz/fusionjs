@@ -1,3 +1,4 @@
+import {Field} from './Field';
 import {FusionStore} from '../store/FusionStore';
 
 interface IModel {
@@ -47,7 +48,7 @@ export class FusionModel implements IModel {
     /**
      * @private
      */
-    private _keys: Array<any>;
+    private _keys: Object;
 
     /**
      * @private
@@ -67,11 +68,6 @@ export class FusionModel implements IModel {
     /**
      * @private
      */
-    private _stateful: Object;
-
-    /**
-     * @private
-     */
     private _isInitialised: boolean = false;
 
     /**
@@ -83,7 +79,6 @@ export class FusionModel implements IModel {
      * @constructor
      */
     constructor(data: Object) {
-        this._stateful = {};
         this._associatedStores = {};
         this.data = data;
     }
@@ -119,15 +114,15 @@ export class FusionModel implements IModel {
      */
     toObject () {
         let buffer = {};
-        this._keys.forEach((key) => {
-            buffer[key] = this.get(key);
-        }, this);
+        Object.keys(this._keys).forEach((key) => {
+            buffer[key] = this._keys[key].get(key);
+        });
         this._hasManyKeys.forEach((key) => {
             buffer[key] = this[key]().toObject();
-        }, this);
+        });
         this._hasOneKeys.forEach((key) => {
             buffer[key] = this[key]().toObject();
-        }, this);
+        });
         return buffer;
     }
 
@@ -168,7 +163,7 @@ export class FusionModel implements IModel {
      */
     get (key?: string) {
         if (typeof key !== 'undefined' && key !== null) {
-            return this._stateful[key];
+            return this._keys[key].get();
         } else {
             return this._getAll();
         }
@@ -178,13 +173,12 @@ export class FusionModel implements IModel {
      * @private
      */
     _getAll () {
-        let buffer = {};
-        if (this._keys.length > 0) {
-            this._keys.forEach((key) => {
+        let buffer = {},
+            keys = Object.keys(this._keys);
+        if (keys.length > 0) {
+            keys.forEach((key) => {
                 buffer[key] = this.get(key);
             }, this);
-        } else {
-            buffer = this._stateful;
         }
         return buffer;
     }
@@ -197,12 +191,12 @@ export class FusionModel implements IModel {
      */
     set (keyOrData: any, value?: any) {
         if (value || keyOrData instanceof String) {
-            if (this._keys.indexOf(keyOrData) > -1)  {
+            if (this._keys.hasOwnProperty(keyOrData)) {
                 this._setData(keyOrData, value);
             }
         } else {
             Object.keys(keyOrData).forEach((key) => {
-                if (this._keys.indexOf(key) > -1)  {
+                if (this._keys.hasOwnProperty(key)) {
                     this._setData(key, keyOrData[key]);
                 } else if (this._hasOneKeys.indexOf(key) > -1 && keyOrData[key]) {
                     this._setAssociatedModelData(keyOrData, key);
@@ -280,12 +274,12 @@ export class FusionModel implements IModel {
      * @description Clears all model data
      */
     reset () {
-        let keys = this._keys,
+        let keys = Object.keys(this._keys),
             hasManyKeys = this._hasManyKeys,
             hasOneKeys = this._hasOneKeys;
 
         keys.forEach((key) => {
-            this._stateful[key] = null;
+            this._keys[key].set(null);
         }, this);
 
         hasManyKeys.forEach((hasManyKey) => {
@@ -328,7 +322,7 @@ export class FusionModel implements IModel {
      * @private
      */
     _setData (field: string, value: any){
-        this._stateful[field] = value;
+        this._keys[field].set(value);
     }
 
     /**
@@ -416,13 +410,13 @@ export class FusionModel implements IModel {
      */
     _setFields() {
         let fields = this.fields || [];
-        this._keys = [];
         if (fields.length === 0) {
             throw new Error('No fields defined');
         }
-        fields.forEach((field) => {
-            this._keys.push(field.name);
-        }, this);
+        this._keys = fields.reduce((acc, field) => {
+            acc[field.name] = new Field(field);
+            return acc;
+        }, {});
     }
 
     /**

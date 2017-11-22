@@ -11,6 +11,13 @@ describe('FusionModel', () => {
 			fields = [{
 				name: 'testId',
 				type: 'string'
+			}, {
+				name: 'testName',
+				type: 'string',
+				defaultValue: 'a default value'
+			}, {
+				name: 'testEmptyValue',
+				type: 'string'
 			}];
 		}
 		let testData = { testId: 123 },
@@ -18,7 +25,10 @@ describe('FusionModel', () => {
 
 		it('should configure model data when init is called', () => {
 			testModel.init();
-			expect(testModel.toObject()).to.deep.equal(testData);
+			expect(testModel.toObject()).to.deep.equal((<any>Object).assign({
+				testName: 'a default value',
+				testEmptyValue: undefined
+			}, testData));
 		});
 	});
 
@@ -242,7 +252,7 @@ describe('FusionModel', () => {
 		});
 	});
 
-	describe('#Check shallow equality', () => {
+	describe('#Check deep equality', () => {
 		class TestRelOneModel extends FusionModel {
 			idProperty = 'testId';
 			fields = [{
@@ -251,6 +261,10 @@ describe('FusionModel', () => {
 			}, {
 				name: 'testValue',
 				type: 'string'
+			}];
+			hasMany = [{
+				name: 'rels',
+				model: TestRelsModel
 			}];
 			constructor(data) {
 				super(data);
@@ -327,7 +341,14 @@ describe('FusionModel', () => {
 				testValue: 'one, two, three',
 				relOne: {
 					testId: 1123,
-					testValue: 'two hundred and something'
+					testValue: 'two hundred and something',
+					rels: [{
+						testId: 3333,
+						testValue: 'threes'
+					}, {
+						testId: 4444,
+						testValue: 'fours'
+					}]
 				},
 				rels: [{
 					testId: 2123,
@@ -357,7 +378,14 @@ describe('FusionModel', () => {
 				testValue: 'one, two, three',
 				relOne: {
 					testId: 1123,
-					testValue: 'two hundred and something'
+					testValue: 'two hundred and something',
+					rels: [{
+						testId: 3333,
+						testValue: 'threes'
+					}, {
+						testId: 4444,
+						testValue: 'fours'
+					}]
 				},
 				rels: [{
 					testId: 2123,
