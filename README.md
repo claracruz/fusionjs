@@ -136,7 +136,7 @@ let testModel = new TestModel(sampleData);
 testModel.get(); //Will return the top level data 
 test.rels();	//returns a store contaning your hasMany data collection
 test.rels().get(); //returns a collection (an array) of records representing your "hasMany" data
-test.relOne.get() //returns a record representing your "hasOne" data
+test.relOne(); //returns a record representing your "hasOne" data
 
 //you can set data after instantiation like so;
 let testModel = new TestModel();
